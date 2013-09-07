@@ -1,7 +1,31 @@
-var MongoClient = require('mongodb').MongoClient
-  , secret      = require('./secret').localdb
-  , request     = require('request')
+var MongoClient  = require('mongodb').MongoClient
+  , secret       = require('./secret').localdb
+  , request      = require('request')
+  , access_token = 'CAACEdEose0cBACJLCxeFf67RZA535VWN068GqaUiAcc9xx8BrRJ0yulw3Oid2c1HTfQget7JxBrLSz0mmPdPIQu1HQZC3W01izSgNtEUOU3QGwsbF7znYhJACMZAvWab7zMnKZAQ0kaykgjZC3dl6F9cIyHsUmcc1lrkaRsXW8PEgmx90qehKaPEUQZAFrFbU9H4R0o90ALAZDZD'
 ;
+
+var map = function(){
+  var stop_words = ['the', 'a', 'message'];
+  this.unique = [];
+  var str_arr = this.message.split(' ');
+  for(var i in str_arr){
+
+    // Replace all punctuation
+    str_arr[i].replace(/\W/g, '');
+
+    // If the remaining word is not a stop word or already in uniques, add it to the uniques array!
+    if(stop_words.indexOf(str_arr[i].toLowerCase()) === -1 && this.unique.indexOf(str_arr[i].toLowerCase()) === -1){
+      this.unique.push(str_arr[i]);
+    }
+  }
+  emit(this._id, this);
+};
+
+var reduce = function(key, value){
+  return value;
+};
+
+
 
 // admin page
 exports.admin = function(req, res){
@@ -24,29 +48,28 @@ exports.index = function(req, res){
 };
 
 exports.import = function(req, res){
-  request('https://graph.facebook.com/343198942394389/feed?access_token=CAACEdEose0cBAAOyBcNBVE3TOvFipEAZBljbjejbvMpxvfSuVDoiqKzgVCkSeCV0Xu53nEf1zCZBeHrD3v39o4NfGVQfZCVPk5RlkUfUwOVRDZBwFqIZCZBGXzI6VtiUk2o6hEszgZAaPVRJcDXFNEkMZApsZC1MeKug7soPdRoRiuopP2om8H69FrH6kT12iHZC82T6UJYJVDGQZDZD', function(err, response, body){
+  request('https://graph.facebook.com/343198942394389/feed?access_token='+access_token, function(err, response, body){
     if(err){throw err;}
     console.log(response);
     if(response.body.indexOf('error') && response.statusCode == 200) {
-      //console.log(body);
       body = JSON.parse(body);
-
       MongoClient.connect('mongodb://'+secret.url+':'+secret.port+'/'+secret.name, function(err, db) {
         if(err){throw err;}
-        db.authenticate(secret.user, secret.pass, function(err, auth){
-          db.collection('graphdata', function(err, col){
+        db.collection('graphdata', function(err, col){
+          if(err){throw err;}
+          col.insert(body.data, function(err, resp){
             if(err){throw err;}
-            //console.log(body);
-            col.insert(body.data, function(err, resp){
-              if(err){throw err;}
-              console.log(err);
-              console.log(resp);
+            console.log('Done inserting');
+            console.log(map, reduce);
+            console.log(col.mapReduce);
+            col.mapReduce(map, reduce, {out: 'graphdata1'}, function(err, d){
+              //console.log(err);
+              //console.log(d);
             });
+            res.send('legit');
           });
         });
       });
-
-      res.render('import', { 'results': body.body });
     } else {
       res.send('err');
     }
