@@ -1,3 +1,3 @@
 # Celery.js
 
-PennApps 2013F
+PennApps 2013F Project
