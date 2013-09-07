@@ -3,7 +3,8 @@ var express = require('express')
   , colors  = require('colors')
   , router  = require('./router.js')
   , config  = require('./config.js')
-  , http    = require('http');
+  , http    = require('http')
+ ;
 
 // setup here
 config(app);
@@ -13,9 +14,10 @@ config(app);
 // define API routes here
 // ---------------------------------------------------------- //
 // GET
-app.get('/',      router.index);
-app.get('/admin', router.admin);
-app.get('/db',    router.db   );
+app.get('/',       router.index );
+app.get('/admin',  router.admin );
+app.get('/db',     router.db    );
+app.get('/search', router.search);
 // ---------------------------------------------------------- //
 // ---------------------------------------------------------- //
 
