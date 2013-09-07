@@ -20,7 +20,7 @@ exports.getfbdata = function(link){
         });
       });
 
-      return 0;
+      return body.length;
 
     } else {
       // Error out if something was wrong with the FB request

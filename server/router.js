@@ -4,7 +4,7 @@ var MongoClient  = require('mongodb').MongoClient
   , reduce       = require('./reduce.js').reduce
   , fbdata       = require('./fbdata.js')
   , num_results  = 400
-  , access_token = 'CAACEdEose0cBAEOat5wTgItVQMZAvgWlLsUY1LrduSVfaFXv8DuuGjC2Nf4iItnZB5rdL2hJqhtRyu4syiCJiTVgEfpVwKxgGQ6UvbsxAzxU9SjjeGPjzpasdovaEZCBq4Uft69PwG53ZBbwBXmgzqcFm6nr7UZADNNnziaMK6yZCg5CL2Mg7edpDT8Ip45AMHZBtX6tuCrPAZDZD'
+  , access_token = 'CAACEdEose0cBAIQoEmL1vwhFZCmcvZCwiS2neQVem0E1eGW1VkcBZBcbfwb6bjt2JLZBLp6krkyJsmrQc2mVrpfmJZAhMZC3Lg9ZAcFhT3nUARqzIBOxyuVfV1RNGRsZB94ZAzJZB61ZCHLoG0KVGQEzJGE7heGPuck9ZADZBIy66qA3xDE4lXyGT0LilDcZBBbKiSHt8YNtAzae1O2QZDZD'
   , fbid         = '343199955727621'
   , fblink       = 'https://graph.facebook.com/'+fbid+'/feed?limit='+num_results+'&access_token='+access_token
 ;
@@ -94,9 +94,11 @@ exports.index = function(req, res){
 };
 
 exports.import = function(req, res){
-  if(fbdata.getfbdata(fblink) === -1){
+  result = fbdata.getfbdata(fblink);
+  if(result === -1){
     res.send('err');
   }
+  console.log(result);
   res.send('ok');
 };
 

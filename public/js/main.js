@@ -6,7 +6,7 @@ $(function() {
 		if(e.target.id === "insert"){
 			$.get('/import', function(data){if(data === 'ok'){location.reload();}});
 		} else if(e.target.id === "delete"){
-			$.get('/drop', function(data){if(data === 'ok'){alert('deleted');});
+			$.get('/drop', function(data){if(data === 'ok'){alert('deleted');}});
 		}else if(e.target.id !== clicked){
 			$('#'+clicked).removeClass('active');
 			$('#table_'+clicked).hide();
