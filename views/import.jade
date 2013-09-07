@@ -1,7 +1,11 @@
 extends layout
 
 block append content
-	div WANTED
+	#celery_cont
+		a(id="celery", class="in") Ce
+		img(src='/img/celery.jpeg', class='cel')
+		a(id="celery", class="in") ery
+	.titles WANTED
 		table(class="table table-striped table-bordered")
 			thead
 				tr
@@ -17,7 +21,7 @@ block append content
 					td
 						a=buy[i]['num']
 			- }
-	div FOR SALE
+	.titles FOR SALE
 		table(class="table table-striped table-bordered")
 			thead
 				tr

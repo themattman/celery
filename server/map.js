@@ -11,54 +11,57 @@ exports.map = function(){
   this.unique = [];
 
   // Lower Case the FB Post
-  this.message = this.message.toLowerCase();
+  if(this.message){
+    this.message = this.message.toLowerCase();
 
-  // Split on space characters
-  var str_arr = this.message.split(' ');
+    // Split on space characters
+    var str_arr = this.message.split(' ');
 
-  // Set to 0 when a "buy" term is found, 1 when "sell" term found
-  // -1 before that
-  var buysell = -1;
+    // Set to 0 when a "buy" term is found, 1 when "sell" term found
+    // -1 before that
+    var buysell = -1;
 
-  for(var i = 0; i < str_arr.length; i++){
+    for(var i = 0; i < str_arr.length; i++){
 
-    var special = false;
-    // Check for links
-    if(str_arr[i].match(/http(s)?:\/\/[^ ]+/) || str_arr[i].match(/www.[^ ]+.[^ ]+/)){
-      special = true;
-    }
-    // Check for email address
-    if(~str_arr[i].match(/[^ ]+@[^ ]+.[^ ]+/)){
-      special = true;
-    }
-    // Check for money
-    if(~str_arr[i].match(/[$][ ]?[0-9]+/)){
-      special = true;
-    }
+      var special = false;
+      // Check for links
+      if(str_arr[i].match(/http(s)?:\/\/[^ ]+/) || str_arr[i].match(/www.[^ ]+.[^ ]+/)){
+        special = true;
+      }
+      // Check for email address
+      if(~str_arr[i].match(/[^ ]+@[^ ]+.[^ ]+/)){
+        special = true;
+      }
+      // Check for money
+      if(~str_arr[i].match(/[$][ ]?[0-9]+/)){
+        special = true;
+      }
 
-    // Replace all punctuation
-    if(!special){
-      str_arr[i] = str_arr[i].replace(/[^a-zA-Z0-9$]*/g, '');
-    } else {
-      str_arr[i] = str_arr[i].replace(/[.!,?]+$/, '');
-    }
-
-    if(~buying.indexOf(str_arr[i])){
-      buysell = 0;
-    } else if(~selling.indexOf(str_arr[i])){
-      buysell = 1;
-    }
-
-    // If the remaining word is not a stop word or already in uniques, add it to the uniques array!
-    if(stop_words.indexOf(str_arr[i]) === -1 && this.unique.indexOf(str_arr[i]) === -1){
-      if(buysell === 0){
-        this.buy.push(str_arr[i]);
-      } else if(buysell == 1){
-        this.sell.push(str_arr[i]);
+      // Replace all punctuation
+      if(!special){
+        str_arr[i] = str_arr[i].replace(/[^a-zA-Z0-9$]*/g, '');
       } else {
-        this.unique.push(str_arr[i]);
+        str_arr[i] = str_arr[i].replace(/[.!,?]+$/, '');
+      }
+
+      if(~buying.indexOf(str_arr[i])){
+        buysell = 0;
+      } else if(~selling.indexOf(str_arr[i])){
+        buysell = 1;
+      }
+
+      // If the remaining word is not a stop word or already in uniques, add it to the uniques array!
+      if(stop_words.indexOf(str_arr[i]) === -1 && this.unique.indexOf(str_arr[i]) === -1){
+        if(buysell === 0){
+          this.buy.push(str_arr[i]);
+        } else if(buysell == 1){
+          this.sell.push(str_arr[i]);
+        } else {
+          this.unique.push(str_arr[i]);
+        }
       }
     }
   }
   emit(this._id, this);
+
 };
