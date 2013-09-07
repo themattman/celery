@@ -7,6 +7,7 @@ var MongoClient  = require('mongodb').MongoClient
   , access_token = 'CAACEdEose0cBAIQoEmL1vwhFZCmcvZCwiS2neQVem0E1eGW1VkcBZBcbfwb6bjt2JLZBLp6krkyJsmrQc2mVrpfmJZAhMZC3Lg9ZAcFhT3nUARqzIBOxyuVfV1RNGRsZB94ZAzJZB61ZCHLoG0KVGQEzJGE7heGPuck9ZADZBIy66qA3xDE4lXyGT0LilDcZBBbKiSHt8YNtAzae1O2QZDZD'
   , fbid         = '343199955727621'
   , fblink       = 'https://graph.facebook.com/'+fbid+'/feed?limit='+num_results+'&access_token='+access_token
+  , group_ids    = ['343199955727621', '343214415726175']
 ;
 
 // admin page
@@ -39,7 +40,6 @@ exports.drop = function(req, res){
 };
 
 exports.mapReduce = function(req, res){
-  //res.render('import', { unique: 'u', buy: 'b', sell: 's'});
   // Run MapReduce on the data
   MongoClient.connect('mongodb://'+secret.url+':'+secret.port+'/'+secret.name, function(err, db){if(err){throw err;}
     db.collection('graphdata', function(err, col){if(err){throw err;}
@@ -49,6 +49,7 @@ exports.mapReduce = function(req, res){
         db.collection('graphdata1', function(err, col2){
           if(err){throw err;}
 
+          // BUY
           col2.aggregate(
             { $project: { "value.buy": 1 , "_id": 0 } },
             { $unwind: "$value.buy" },
@@ -58,6 +59,7 @@ exports.mapReduce = function(req, res){
               if(err){console.log(err);}
               console.log(b);
 
+              // SELL
               col2.aggregate(
                 { $project: { "value.sell": 1 , "_id": 0 } },
                 { $unwind: "$value.sell" },
@@ -67,6 +69,7 @@ exports.mapReduce = function(req, res){
                   if(err){console.log(err);}
                   if(s){console.log(s);}
 
+                  // UNIQUE
                   col2.aggregate(
                     { $project: { "value.unique": 1 , "_id": 0 } },
                     { $unwind: "$value.unique" },
@@ -75,7 +78,35 @@ exports.mapReduce = function(req, res){
                     function(err, u){
                       if(err){console.log(err);}
                       if(u){console.log(u);}
-                      res.render('import', { unique: u, buy: b, sell: s});
+
+                      // COURSE
+                      col2.aggregate(
+                        { $project: { "value.unique": 1 , "_id": 0 } },
+                        { $unwind: "$value.unique" },
+                        { $group: { '_id': "$value.unique", 'num': { $sum: 1 } } },
+                        { $sort: { "num": -1 } },
+                        function(err, u){
+                          if(err){console.log(err);}
+                          if(u){console.log(u);}
+
+                          // PRICE
+                          col2.aggregate(
+                            { $project: { "value.unique": 1 , "_id": 0 } },
+                            { $unwind: "$value.unique" },
+                            { $group: { '_id': "$value.unique", 'num': { $sum: 1 } } },
+                            { $sort: { "num": -1 } },
+                            function(err, u){
+                              if(err){console.log(err);}
+                              if(u){console.log(u);}
+
+                              db.collection('graph_meta_data', function(err, coll){if(err){throw err;}
+                                coll.insert(u, function(){});
+                                coll.insert(b, function(){});
+                                coll.insert(s, function(){});
+                                res.render('import', { unique: u, buy: b, sell: s});
+                              });
+                          });
+                      });
                   });
 
               });
@@ -90,7 +121,7 @@ exports.mapReduce = function(req, res){
 
 // main page
 exports.index = function(req, res){
-  res.render('index', { title: 'Matt Kneiser' });
+  res.render('index');
 };
 
 exports.import = function(req, res){

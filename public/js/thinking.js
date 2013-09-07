@@ -4,3 +4,8 @@ Courses Collection:
 	items: [""],
 	prices: [""]
 }
+
+Prices Collection:
+{
+	
+}

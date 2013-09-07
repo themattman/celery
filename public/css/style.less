@@ -53,3 +53,33 @@ thead tr td a {
 a {
 	color: black;
 }
+
+.anim_none {
+	.anim(0deg, 0px, 0px);
+}
+
+.anim (@deg, @x, @y) {
+	-webkit-transform:rotate(@deg) translateX(@x) translateY(@y);
+}
+
+.bounce {
+  -webkit-animation: bounce 0.3s;
+}
+
+@-webkit-keyframes bounce {
+  0% {
+	.anim(10deg, 0px, -8px);
+  }
+  25% {
+	.anim(30deg, 25px, 20px);
+  }
+  50% {
+  	.anim(-1deg, -5px, -6px)
+  }
+  75% {
+  	.anim(-20deg, -10px, 22px);
+  }
+  100% {
+	.anim(0deg, 0px, 0px);
+  }
+}

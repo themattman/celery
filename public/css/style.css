@@ -44,3 +44,26 @@ thead tr td a {
 a {
   color: black;
 }
+.anim_none {
+  -webkit-transform: rotate(0deg) translateX(0px) translateY(0px);
+}
+.bounce {
+  -webkit-animation: bounce 0.3s;
+}
+@-webkit-keyframes bounce {
+  0% {
+    -webkit-transform: rotate(10deg) translateX(0px) translateY(-8px);
+  }
+  25% {
+    -webkit-transform: rotate(30deg) translateX(25px) translateY(20px);
+  }
+  50% {
+    -webkit-transform: rotate(-1deg) translateX(-5px) translateY(-6px);
+  }
+  75% {
+    -webkit-transform: rotate(-20deg) translateX(-10px) translateY(22px);
+  }
+  100% {
+    -webkit-transform: rotate(0deg) translateX(0px) translateY(0px);
+  }
+}

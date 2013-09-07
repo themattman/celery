@@ -15,4 +15,13 @@ $(function() {
 			$('#table_'+e.target.id).fadeIn();
 		}
 	});
+
+	// Flip the celery
+	$(document).click(function(){
+		console.log('ITS HAPPENING');
+		$('.cel').addClass('bounce');
+		setTimeout(function(){
+			$('.cel').removeClass('bounce');
+		}, 600);
+	});
 });
