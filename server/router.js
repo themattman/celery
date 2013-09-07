@@ -1,62 +1,10 @@
 var MongoClient  = require('mongodb').MongoClient
   , secret       = require('./secret').localdb
   , request      = require('request')
-  , access_token = 'CAACEdEose0cBAN2PprI6YMcLSymxpBLEqvyecUAGAhXa48RuAoxRLnlUhK0WQTL7rifqQBmlZAjnFyLsTLMj5s35wMVGukF3BvaKBNSqfSdpESAZBLyL7h5Ln4TBJ4fMtH5YtagACoyAIRKySQRMtnrpPNoLqg1hs1rneVfUZBCfaD4JBZCU06kd8PrjuH8fyMJH1JUKiQZDZD'
+  , map          = require('./map.js').map
+  , reduce       = require('./reduce.js').reduce
+  , access_token = 'CAACEdEose0cBAPMzzmDeRCxOOcF9jG4BJZB9WeuGaenNMFmW9u4S9iFMUZCNaotBGhBQl8qRGpifDM3jxVZAQIkU4NNESXw7aBbIRxsjJzP1kosGQTZBNJsUS1WRakApkCaGjQh59QXAUarZC2jPm8yIpXGa8ZCqz5zP2phAAE44OyI2aloxb7pjgg0sTlhf2PDmaKFUvZCZAAZDZD'
 ;
-
-var map = function(){
-  // Stop words src: http://www.textfixer.com/resources/common-english-words.txt
-  var stop_words = ['a','able','about','across','after','all','almost','also','am','among','an','and','any','are','as','at','be','because','been','but','by','can','cannot','could','dear','did','do','does','either','else','ever','every','for','from','get','got','had','has','have','he','her','hers','him','his','how','however','i','if','in','into','is','it','its','just','least','let','like','likely','may','me','might','most','must','my','neither','no','nor','not','of','off','often','on','only','or','other','our','own','rather','said','say','says','she','should','since','so','some','than','that','the','their','them','then','there','these','they','this','tis','to','too','twas','us','wants','was','we','were','what','when','where','which','while','who','whom','why','will','with','would','yet','you','your'];
-
-  // Create a new field for the unique words in the FB Post
-  this.unique = [];
-
-  // Lower Case the FB Post
-  this.message = this.message.toLowerCase();
-
-  // Split on space characters
-  var str_arr = this.message.split(' ');
-
-  for(var i = 0; i < str_arr.length; i++){
-
-    var special = false;
-    // Check for links
-    if(str_arr[i].match(/http(s)?:\/\/[^ ]+/) || str_arr[i].match(/www.[^ ]+.[^ ]+/)){
-      special = true;
-    }
-    // Check for email address
-    if(~str_arr[i].match(/[^ ]+@[^ ]+.[^ ]+/)){
-      special = true;
-    }
-    // Check for money
-    if(~str_arr[i].match(/[$][ ]?[0-9]+/)){
-      special = true;
-    }
-
-    // Replace all punctuation
-    if(!special){
-      str_arr[i] = str_arr[i].replace(/[^a-zA-Z0-9$]*/g, '');
-    } else {
-      str_arr[i] = str_arr[i].replace(/[.!,?]+$/, '');
-    }
-
-    // If the remaining word is not a stop word or already in uniques, add it to the uniques array!
-    if(stop_words.indexOf(str_arr[i]) === -1 && this.unique.indexOf(str_arr[i]) === -1){
-      this.unique.push(str_arr[i]);
-    }
-  }
-  emit(this._id, this);
-};
-
-var reduce = function(key, value){
-  return value;
-};
-
-
-var buying = ["buy", "buying"];//, "looking for"];
-var selling = ["sell", "selling"];
-
-
 
 // admin page
 exports.admin = function(req, res){
@@ -92,7 +40,7 @@ exports.import = function(req, res){
             console.log('Done inserting');
             col.mapReduce(map, reduce, {out: 'graphdata1'}, function(){
               db.collection('graphdata1', function(err, col2){
-                col2.aggregate(
+                /*col2.aggregate(
                   { $project: { "value.unique": 1 , "_id": 0 } },
                   { $unwind: "$value.unique" },
                   { $group: { '_id': "$value.unique", 'num': { $sum: 1 } } },
@@ -107,7 +55,49 @@ exports.import = function(req, res){
                         if(err){console.log(err);}
                       });
                     });
+                });*/
+
+                col2.aggregate(
+                  { $project: { "value.buy": 1 , "_id": 0 } },
+                  { $unwind: "$value.buy" },
+                  { $group: { '_id': "$value.buy", 'num': { $sum: 1 } } },
+                  { $sort: { "num": -1 } },
+                  function(err, b){
+                    if(err){console.log(err);}
+                    console.log('b');
+                    console.log(b);
+
+                    col2.aggregate(
+                      { $project: { "value.sell": 1 , "_id": 0 } },
+                      { $unwind: "$value.sell" },
+                      { $group: { '_id': "$value.sell", 'num': { $sum: 1 } } },
+                      { $sort: { "num": -1 } },
+                      function(err, s){
+                        if(err){console.log(err);}
+                        if(s){console.log(s);}
+
+                        col2.aggregate(
+                          { $project: { "value.unique": 1 , "_id": 0 } },
+                          { $unwind: "$value.unique" },
+                          { $group: { '_id': "$value.unique", 'num': { $sum: 1 } } },
+                          { $sort: { "num": -1 } },
+                          function(err, u){
+                            if(err){console.log(err);}
+                            if(u){console.log(u);}
+                            res.render('import', { unique: u, buy: b, sell: s});
+
+                            col2.remove({}, function(err){
+                              if(err){console.log(err);}
+                              col.remove({}, function(err){
+                                if(err){console.log(err);}
+                              });
+                            });
+                        });
+
+                    });
+
                 });
+
               });
             });
           });
