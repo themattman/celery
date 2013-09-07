@@ -1,13 +1,3 @@
-## Skeleton for Node apps
+# Celery.js
 
-Meant for rapid prototyping.
-
-### How to use
-
-`git clone git@github.com:themattman/node-skeleton.git`
-
-`cd node-skeleton`
-
-`npm install`
-
-`node server`
+PennApps 2013F

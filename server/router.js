@@ -1,5 +1,5 @@
 var mongo = require('./database.js')
-  , email = require('./email.js');
+;
 
 /*mongo.connect(function(msg) {
   if(msg == null)
@@ -26,17 +26,4 @@ exports.db = function(req, res){
 // main page
 exports.index = function(req, res){
   res.render('index', { title: 'Matt Kneiser' });
-};
-
-// email test
-exports.email = function(req, res){
-  email.send({ 
-    name: "Matt", 
-    email: "mattman@umich.edu"
-  } 
-  // templates defined in /server/email/
-  ,'template.jade', function(msg) { 
-    console.log(msg);
-    res.send(msg);
-  });
 };

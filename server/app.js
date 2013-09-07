@@ -16,7 +16,6 @@ config(app);
 app.get('/',      router.index);
 app.get('/admin', router.admin);
 app.get('/db',    router.db   );
-app.get('/email', router.email);
 // ---------------------------------------------------------- //
 // ---------------------------------------------------------- //
 
