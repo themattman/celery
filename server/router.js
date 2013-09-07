@@ -1,12 +1,12 @@
 var MongoClient  = require('mongodb').MongoClient
   , secret       = require('./secret').localdb
   , request      = require('request')
-  , access_token = 'CAACEdEose0cBACJLCxeFf67RZA535VWN068GqaUiAcc9xx8BrRJ0yulw3Oid2c1HTfQget7JxBrLSz0mmPdPIQu1HQZC3W01izSgNtEUOU3QGwsbF7znYhJACMZAvWab7zMnKZAQ0kaykgjZC3dl6F9cIyHsUmcc1lrkaRsXW8PEgmx90qehKaPEUQZAFrFbU9H4R0o90ALAZDZD'
+  , access_token = 'CAACEdEose0cBAN2PprI6YMcLSymxpBLEqvyecUAGAhXa48RuAoxRLnlUhK0WQTL7rifqQBmlZAjnFyLsTLMj5s35wMVGukF3BvaKBNSqfSdpESAZBLyL7h5Ln4TBJ4fMtH5YtagACoyAIRKySQRMtnrpPNoLqg1hs1rneVfUZBCfaD4JBZCU06kd8PrjuH8fyMJH1JUKiQZDZD'
 ;
 
 var map = function(){
-  // Generate all the stopwords
-  var stop_words = ['the', 'a', 'message'];
+  // Stop words src: http://www.textfixer.com/resources/common-english-words.txt
+  var stop_words = ['a','able','about','across','after','all','almost','also','am','among','an','and','any','are','as','at','be','because','been','but','by','can','cannot','could','dear','did','do','does','either','else','ever','every','for','from','get','got','had','has','have','he','her','hers','him','his','how','however','i','if','in','into','is','it','its','just','least','let','like','likely','may','me','might','most','must','my','neither','no','nor','not','of','off','often','on','only','or','other','our','own','rather','said','say','says','she','should','since','so','some','than','that','the','their','them','then','there','these','they','this','tis','to','too','twas','us','wants','was','we','were','what','when','where','which','while','who','whom','why','will','with','would','yet','you','your'];
 
   // Create a new field for the unique words in the FB Post
   this.unique = [];
@@ -59,7 +59,7 @@ exports.index = function(req, res){
 exports.import = function(req, res){
   request('https://graph.facebook.com/343198942394389/feed?access_token='+access_token, function(err, response, body){
     if(err){throw err;}
-    console.log(response);
+    //console.log(response);
     if(response.body.indexOf('error') && response.statusCode == 200) {
       body = JSON.parse(body);
       MongoClient.connect('mongodb://'+secret.url+':'+secret.port+'/'+secret.name, function(err, db) {
@@ -70,7 +70,18 @@ exports.import = function(req, res){
             if(err){throw err;}
             console.log('Done inserting');
             col.mapReduce(map, reduce, {out: 'graphdata1'}, function(){
-              res.send('legit');
+              db.collection('graphdata1', function(err, col2){
+                col2.aggregate(
+                  { $project: { "value.unique": 1 , "_id": 0 } },
+                  { $unwind: "$value.unique" },
+                  { $group: { '_id': "$value.unique", 'num': { $sum: 1 } } },
+                  { $sort: { "num": 1 } },
+                  function(err, d){
+                    if(err){console.log(err);}
+                    if(d){console.log(d);}
+                });
+                res.send('legit');
+              });
             });
           });
         });
