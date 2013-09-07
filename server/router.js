@@ -5,16 +5,25 @@ var MongoClient  = require('mongodb').MongoClient
 ;
 
 var map = function(){
+  // Generate all the stopwords
   var stop_words = ['the', 'a', 'message'];
+
+  // Create a new field for the unique words in the FB Post
   this.unique = [];
+
+  // Lower Case the FB Post
+  this.message = this.message.toLowerCase();
+
+  // Split on space characters
   var str_arr = this.message.split(' ');
+
   for(var i in str_arr){
 
     // Replace all punctuation
-    str_arr[i].replace(/\W/g, '');
+    str_arr[i] = str_arr[i].replace(/[^a-zA-Z0-9]+/g, '');
 
     // If the remaining word is not a stop word or already in uniques, add it to the uniques array!
-    if(stop_words.indexOf(str_arr[i].toLowerCase()) === -1 && this.unique.indexOf(str_arr[i].toLowerCase()) === -1){
+    if(stop_words.indexOf(str_arr[i]) === -1 && this.unique.indexOf(str_arr[i]) === -1){
       this.unique.push(str_arr[i]);
     }
   }
@@ -60,13 +69,9 @@ exports.import = function(req, res){
           col.insert(body.data, function(err, resp){
             if(err){throw err;}
             console.log('Done inserting');
-            console.log(map, reduce);
-            console.log(col.mapReduce);
-            col.mapReduce(map, reduce, {out: 'graphdata1'}, function(err, d){
-              //console.log(err);
-              //console.log(d);
+            col.mapReduce(map, reduce, {out: 'graphdata1'}, function(){
+              res.send('legit');
             });
-            res.send('legit');
           });
         });
       });
