@@ -18,6 +18,8 @@ PennApps 2013F Project
 
 * Do FB Tokens correctly
 
+* Separate Link to gather the FB data, ensure dependencies - loading symbol?
+
 ## Polish
 
 * Picture of celery

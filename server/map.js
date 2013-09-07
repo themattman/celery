@@ -51,7 +51,7 @@ exports.map = function(){
       }
 
       // If the remaining word is not a stop word or already in uniques, add it to the uniques array!
-      if(stop_words.indexOf(str_arr[i]) === -1 && this.unique.indexOf(str_arr[i]) === -1){
+      if(stop_words.indexOf(str_arr[i]) === -1 && this.unique.indexOf(str_arr[i]) === -1 && buying.indexOf(str_arr[i]) === -1 && selling.indexOf(str_arr[i]) === -1){
         if(buysell === 0){
           this.buy.push(str_arr[i]);
         } else if(buysell == 1){

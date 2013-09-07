@@ -1,20 +1,18 @@
-var num_results  = 100 //at least this much
-  , MongoClient  = require('mongodb').MongoClient
+var MongoClient  = require('mongodb').MongoClient
   , secret       = require('./secret').localdb
   , request      = require('request')
-  , cur_results  = 0
 ;
 
-exports.fbdata = function(link){
+exports.getfbdata = function(link){
+  console.log('fblink', link);
   // Iterate through the Graph API and throw docs into Mongo
   request(link, function(err, response, body){
     if(err){throw err;}
     if(response.statusCode == 200) {
 
       body = JSON.parse(body);
-      cur_results += body.data.length;
-      console.log(body.data.length, cur_results);
 
+      // Insert all the FB posts into MongoDB
       MongoClient.connect('mongodb://'+secret.url+':'+secret.port+'/'+secret.name, function(err, db){if(err){throw err;}
         db.collection('graphdata', function(err, col){if(err){throw err;}
           col.insert(body.data, function(err, resp){if(err){throw err;}
@@ -22,21 +20,14 @@ exports.fbdata = function(link){
         });
       });
 
-      console.log(body.paging);
-      if(body.paging){
-        //console.log(body.paging.next);
-        var fblink = body.paging.previous;
-
-        if(cur_results < num_results){
-          console.log('recurse!');
-          console.log(fblink);
-          exports.fbdata(fblink);
-        }
-      }
+      return 0;
 
     } else {
-      res.send('err');
+      // Error out if something was wrong with the FB request
+      console.log(JSON.parse(response.body));
+      console.log(response.statusCode);
+      return -1;
     }
 
-  }); //response
+  });//request
 }
