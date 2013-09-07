@@ -1,5 +1,8 @@
 extends layout
 
+block append header
+  script(src="/js/parse.js")
+
 block append content
   h1= title
   p Welcome to #{title}

@@ -14,11 +14,13 @@ config(app);
 // define API routes here
 // ---------------------------------------------------------- //
 // GET
-app.get('/',       router.index );
-app.get('/admin',  router.admin );
-app.get('/db',     router.db    );
-app.get('/search', router.search);
-app.get('/import', router.import);
+app.get('/',          router.index    );
+app.get('/admin',     router.admin    );
+app.get('/db',        router.db       );
+app.get('/drop',      router.drop     );
+app.get('/mapreduce', router.mapReduce);
+app.get('/search',    router.search   );
+app.get('/import',    router.import   );
 // ---------------------------------------------------------- //
 // ---------------------------------------------------------- //
 

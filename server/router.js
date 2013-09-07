@@ -3,7 +3,7 @@ var MongoClient  = require('mongodb').MongoClient
   , map          = require('./map.js').map
   , reduce       = require('./reduce.js').reduce
   , fbdata       = require('./fbdata.js')
-  , num_results  = 200
+  , num_results  = 400
   , access_token = 'CAACEdEose0cBAEOat5wTgItVQMZAvgWlLsUY1LrduSVfaFXv8DuuGjC2Nf4iItnZB5rdL2hJqhtRyu4syiCJiTVgEfpVwKxgGQ6UvbsxAzxU9SjjeGPjzpasdovaEZCBq4Uft69PwG53ZBbwBXmgzqcFm6nr7UZADNNnziaMK6yZCg5CL2Mg7edpDT8Ip45AMHZBtX6tuCrPAZDZD'
   , fbid         = '343199955727621'
   , fblink       = 'https://graph.facebook.com/'+fbid+'/feed?limit='+num_results+'&access_token='+access_token
@@ -24,16 +24,22 @@ exports.db = function(req, res){
   })
 };
 
-// main page
-exports.index = function(req, res){
-  res.render('index', { title: 'Matt Kneiser' });
+exports.drop = function(req, res){
+  MongoClient.connect('mongodb://'+secret.url+':'+secret.port+'/'+secret.name, function(err, db){if(err){throw err;}
+    db.collection('graphdata', function(err, col){if(err){throw err;}
+      col.remove({}, function(err){if(err){console.log(err);}
+        db.collection('graphdata1', function(err, col2){if(err){throw err;}
+          col2.remove({}, function(err){if(err){console.log(err);}
+            res.send('ok');
+          });
+        });
+      });
+    });
+  });
 };
 
-exports.import = function(req, res){
-  if(fbdata.getfbdata(fblink) === -1){
-    res.send('err');
-  }
-
+exports.mapReduce = function(req, res){
+  //res.render('import', { unique: 'u', buy: 'b', sell: 's'});
   // Run MapReduce on the data
   MongoClient.connect('mongodb://'+secret.url+':'+secret.port+'/'+secret.name, function(err, db){if(err){throw err;}
     db.collection('graphdata', function(err, col){if(err){throw err;}
@@ -70,13 +76,6 @@ exports.import = function(req, res){
                       if(err){console.log(err);}
                       if(u){console.log(u);}
                       res.render('import', { unique: u, buy: b, sell: s});
-
-                      col2.remove({}, function(err){
-                        if(err){console.log(err);}
-                        col.remove({}, function(err){
-                          if(err){console.log(err);}
-                        });
-                      });
                   });
 
               });
@@ -87,6 +86,18 @@ exports.import = function(req, res){
 
     });//db.col
   });//connect
+};
+
+// main page
+exports.index = function(req, res){
+  res.render('index', { title: 'Matt Kneiser' });
+};
+
+exports.import = function(req, res){
+  if(fbdata.getfbdata(fblink) === -1){
+    res.send('err');
+  }
+  res.send('ok');
 };
 
 // Celery Splash Page

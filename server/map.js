@@ -39,7 +39,7 @@ exports.map = function(){
 
       // Replace all punctuation
       if(!special){
-        str_arr[i] = str_arr[i].replace(/[^a-zA-Z0-9$]*/g, '');
+        str_arr[i] = str_arr[i].replace(/[~!@#$%\/\^&*()~+-={}[]|:;'"?<>.,\n]*/g, '');
       } else {
         str_arr[i] = str_arr[i].replace(/[.!,?]+$/, '');
       }
