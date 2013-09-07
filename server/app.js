@@ -18,6 +18,7 @@ app.get('/',       router.index );
 app.get('/admin',  router.admin );
 app.get('/db',     router.db    );
 app.get('/search', router.search);
+app.get('/import', router.import);
 // ---------------------------------------------------------- //
 // ---------------------------------------------------------- //
 

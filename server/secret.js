@@ -6,6 +6,13 @@ module.exports = Object.freeze({
     port: 10009,
     name: "Celery"
   },
+  localdb: {
+    user:"mattman",
+    pass:"yoloswag",
+    url: "localhost",
+    port: 27017,
+    name: "Celery"
+  },
   admin: {
     user: "user",
     pass: "pass"
