@@ -75,12 +75,12 @@ exports.import = function(req, res){
                   { $project: { "value.unique": 1 , "_id": 0 } },
                   { $unwind: "$value.unique" },
                   { $group: { '_id': "$value.unique", 'num': { $sum: 1 } } },
-                  { $sort: { "num": 1 } },
+                  { $sort: { "num": -1 } },
                   function(err, d){
                     if(err){console.log(err);}
                     if(d){console.log(d);}
+                    res.render('import', { data: d });
                 });
-                res.send('legit');
               });
             });
           });

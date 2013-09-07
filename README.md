@@ -2,4 +2,24 @@
 
 PennApps 2013F Project
 
-//p=JSON.stringify(results[i])
+## Technical Todo
+
+* Special parsers for
+
+** Prices w/$
+
+** Numbers
+
+** URLs
+
+** Email Addresses
+
+** The Null char
+
+## Polish
+
+* Picture of celery
+
+* Google Search Bar
+
+* Google Auto-complete API
