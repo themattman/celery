@@ -6,15 +6,17 @@ PennApps 2013F Project
 
 * Special parsers for
 
-** Prices w/$
+   * Prices w/$
 
-** Numbers
+   * Numbers
 
-** URLs
+   * URLs
 
-** Email Addresses
+   * Email Addresses
 
-** The Null char
+   * The Null char
+
+* Do FB Tokens correctly
 
 ## Polish
 

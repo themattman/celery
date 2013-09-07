@@ -17,10 +17,28 @@ var map = function(){
   // Split on space characters
   var str_arr = this.message.split(' ');
 
-  for(var i in str_arr){
+  for(var i = 0; i < str_arr.length; i++){
+
+    var special = false;
+    // Check for links
+    if(str_arr[i].match(/http(s)?:\/\/[^ ]+/) || str_arr[i].match(/www.[^ ]+.[^ ]+/)){
+      special = true;
+    }
+    // Check for email address
+    if(~str_arr[i].match(/[^ ]+@[^ ]+.[^ ]+/)){
+      special = true;
+    }
+    // Check for money
+    if(~str_arr[i].match(/[$][ ]?[0-9]+/)){
+      special = true;
+    }
 
     // Replace all punctuation
-    str_arr[i] = str_arr[i].replace(/[^a-zA-Z0-9]+/g, '');
+    if(!special){
+      str_arr[i] = str_arr[i].replace(/[^a-zA-Z0-9$]*/g, '');
+    } else {
+      str_arr[i] = str_arr[i].replace(/[.!,?]+$/, '');
+    }
 
     // If the remaining word is not a stop word or already in uniques, add it to the uniques array!
     if(stop_words.indexOf(str_arr[i]) === -1 && this.unique.indexOf(str_arr[i]) === -1){
@@ -33,6 +51,10 @@ var map = function(){
 var reduce = function(key, value){
   return value;
 };
+
+
+var buying = ["buy", "buying"];//, "looking for"];
+var selling = ["sell", "selling"];
 
 
 
@@ -59,7 +81,6 @@ exports.index = function(req, res){
 exports.import = function(req, res){
   request('https://graph.facebook.com/343198942394389/feed?access_token='+access_token, function(err, response, body){
     if(err){throw err;}
-    //console.log(response);
     if(response.body.indexOf('error') && response.statusCode == 200) {
       body = JSON.parse(body);
       MongoClient.connect('mongodb://'+secret.url+':'+secret.port+'/'+secret.name, function(err, db) {
@@ -80,6 +101,12 @@ exports.import = function(req, res){
                     if(err){console.log(err);}
                     if(d){console.log(d);}
                     res.render('import', { data: d });
+                    col2.remove({}, function(err){
+                      if(err){console.log(err);}
+                      col.remove({}, function(er){
+                        if(err){console.log(err);}
+                      });
+                    });
                 });
               });
             });
