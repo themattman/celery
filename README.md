@@ -27,3 +27,12 @@ PennApps 2013F Project
 * Google Search Bar
 
 * Google Auto-complete API
+
+
+
+
+* Get rid of Stop Words in the course name
+* Average price per class
+* 2-grams ("notre dame")
+* pretty display of arrays in table
+* interface help - get background to stop scrolling...

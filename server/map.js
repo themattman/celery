@@ -12,15 +12,18 @@ exports.map = function(){
   this.price = [];
   this.course = [];
 
-  // Lower Case the FB Post
+  // Stupid js check
   if(this.message){
+
+    // 1) Lower Case the FB Post
     this.message = this.message.toLowerCase();
 
-    // Split on space characters
-    var str_arr = this.message.split(' ');
+    // 2) Split on space & newline characters
+    var str_arr = this.message.split(/[ \n]/);
 
-    // Set to 0 when a "buy" term is found, 1 when "sell" term found
-    // -1 before that
+    // 3) Buy/Sell by-word classifier
+    //      Set to 0 when a "buy" term is found, 1 when "sell" term found
+    //      -1 before that
     var buysell = -1;
 
     // Skips the next iteration of the loop if you find a course name+number
@@ -30,16 +33,16 @@ exports.map = function(){
       if(!course_bool){
         var special = false;
 
-        // Trim ending punctuation
+        // 4) Trim ending punctuation
         str_arr[i] = str_arr[i].replace(/[,.?!:;-=+]+$/g, '');
-        str_arr[i] = str_arr[i].replace(/\n/g, '');
+        str_arr[i] = str_arr[i].replace(/\n/g, ' ');
 
-        // Check for links
-        if(str_arr[i].match(/http(s)?:\/\/[^ ]+/) || str_arr[i].match(/www.[^ ]+.[^ ]+/)){special = true;}
-        // Check for email address
+        // 5) Check for links
+        if(str_arr[i].match(/http(s)?:\/\/[^ ]+/) || str_arr[i].match(/www.[^ ]+.[^ ]+/)){str_arr[i]="";}
+        // 6) Check for email address
         if(str_arr[i].match(/[^ ]+@[^ ]+.[^ ]+/)){str_arr[i] = "";}
 
-        // Course Name Classifier
+        // 7) Course Name Classifier
         if(i+1 < str_arr.length){
           str_arr[i+1] = str_arr[i+1].replace(/[,.?!:;-=+]+/g, '');
           if(str_arr[i].match(/^[a-z]{2,7}$/) && str_arr[i+1].match(/^[0-9]{3,4}$/)){
@@ -53,13 +56,13 @@ exports.map = function(){
           continue;
         }
 
-        // Check for money
+        // 8) Check for money
         if(str_arr[i].match(/^[$][0-9]+$/)){
           this.price.push(str_arr[i].substr(1,str_arr[i].length-1));
           continue;
         }
 
-        // Replace all punctuation
+        // 9) Replace all punctuation
         if(!special){
           str_arr[i] = str_arr[i].replace(/[~!@#$%\/\^&*()~+-={}[]|:;'"?<>.,\n]*/g, '');
         } else {
@@ -74,9 +77,6 @@ exports.map = function(){
 
         // If the remaining word is not a stop word or already in uniques, add it to the uniques array!
         if(str_arr[i].length > 1 && stop_words.indexOf(str_arr[i]) === -1 && this.unique.indexOf(str_arr[i]) === -1 && buying.indexOf(str_arr[i]) === -1 && selling.indexOf(str_arr[i]) === -1){
-
-          
-          
           if(buysell === 0){
             this.buy.push(str_arr[i]);
           } else if(buysell == 1){

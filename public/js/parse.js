@@ -1,15 +1,22 @@
-var str = "Buying MATH 465! (can can someone sell to TBP book swap plz! :P)";
+//var str = "Buying MATH 465! (can can someone sell to TBP book swap plz! :P)";
 //var str = "Buying ND for $100, message me";
 //var str = "Buying IOE333 book and coursepack";
 //var str = "looking for NERS211(Nuclides and Isotopes : Chart of the Nuclides 17th Edition - Knolls Atomic Power Lab)";
+var str = "hey my\nname   is.";
 document.write(str);
-tokenize(str);
+var str_arr = str.split(/[ \n]/);
+for(var i = 0; i < str_arr.length; i++){
+  document.write("<br>["+str_arr[i]+"]");
+}
+document.write("<br>"+str_arr.length);
+
+//tokenize(str);
 
 function tokenize (str) {
   // Stop words src: http://www.textfixer.com/resources/common-english-words.txt
   var stop_words = ['a','able','about','across','after','all','almost','also','am','among','an','and','any','are','as','at','be','because','been','but','by','can','cannot','could','dear','did','do','does','either','else','ever','every','for','from','get','got','had','has','have','he','her','hers','him','his','how','however','i','if','in','into','is','it','its','just','least','let','like','likely','may','me','might','most','must','my','neither','no','nor','not','of','off','often','on','only','or','other','our','own','rather','said','say','says','she','should','since','so','some','than','that','the','their','them','then','there','these','they','this','tis','to','too','twas','us','wants','was','we','were','what','when','where','which','while','who','whom','why','will','with','would','yet','you','your','plz','pls','please','message','someone'];
 
-  var buying = ["buy", "buying"];//, "looking for"];
+  var buying = ["buy", "buying"];
   var selling = ["sell", "selling"];
 
   // Create a new field for the unique words in the FB Post
@@ -37,10 +44,10 @@ function tokenize (str) {
       var special = false;
 
       // Trim ending punctuation
-      str_arr[i] = str_arr[i].replace(/[,.?!:;-=+]+/g, '');
+      str_arr[i] = str_arr[i].replace(/[,.?!:;-=+]+$/, '');
 
       // Check for links
-      if(str_arr[i].match(/http(s)?:\/\/[^ ]+/) || str_arr[i].match(/www.[^ ]+.[^ ]+/)){special = true;}
+      if(str_arr[i].match(/http(s)?:\/\/[^ ]+/) || str_arr[i].match(/www.[^ ]+.[^ ]+/)){str_arr[i]="";}//special = true;}
       // Check for email address
       if(str_arr[i].match(/[^ ]+@[^ ]+.[^ ]+/)){str_arr[i] = "";}
 
