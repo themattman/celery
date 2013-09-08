@@ -14,73 +14,73 @@ block append content
 					.btn#undef Undef
 			#btn_cont
 				.btn.btn-info#courses By Courses
-	#bg
-		#table_cont
-			table(class="table table-striped table-bordered")#table_buy
-				thead
-					tr
-						td
-							a Term
-						td
-							a Occurences
-				tbody
-				- for (var i = 0; i < buy.length; i++) {
-					tr
-						td
-							a=buy[i]['_id']
-						td
-							a=buy[i]['num']
-				- }
-			table(class="table table-striped table-bordered gone")#table_sell
-				thead
-					tr
-						td
-							a Term
-						td
-							a Occurences
-				tbody
-				- for (var i = 0; i < sell.length; i++) {
-					tr
-						td
-							a=sell[i]['_id']
-						td
-							a=sell[i]['num']
-				- }
-			table(class="table table-striped table-bordered gone")#table_undef
-				thead
-					tr
-						td
-							a Term
-						td
-							a Occurences
-				tbody
-				- for (var i = 0; i < unique.length; i++) {
-					tr
-						td
-							a=unique[i]['_id']
-						td
-							a=unique[i]['num']
-				- }
-			table(class="table table-striped table-bordered gone")#table_course
-				thead
-					tr
-						td
-							a Course
-						td
-							a Price
-						td
-							a Selling
-						td
-							a Buying
-				tbody
-				- for (var i = 0; i < course.length; i++) {
-					tr
-						td
-							a=course[i]['_id']
-						td
-							a=course[i]['value']['price']
-						td
-							a=course[i]['value']['sell']
-						td
-							a=course[i]['value']['buy']
-				- }
+	#bg.relative
+	#table_cont.tabsolute
+		table(class="table table-striped table-bordered")#table_buy
+			thead
+				tr
+					td
+						a Term
+					td
+						a Occurences
+			tbody
+			- for (var i = 0; i < buy.length; i++) {
+				tr
+					td
+						a=buy[i]['_id']
+					td
+						a=buy[i]['num']
+			- }
+		table(class="table table-striped table-bordered gone")#table_sell
+			thead
+				tr
+					td
+						a Term
+					td
+						a Occurences
+			tbody
+			- for (var i = 0; i < sell.length; i++) {
+				tr
+					td
+						a=sell[i]['_id']
+					td
+						a=sell[i]['num']
+			- }
+		table(class="table table-striped table-bordered gone")#table_undef
+			thead
+				tr
+					td
+						a Term
+					td
+						a Occurences
+			tbody
+			- for (var i = 0; i < unique.length; i++) {
+				tr
+					td
+						a=unique[i]['_id']
+					td
+						a=unique[i]['num']
+			- }
+		table(class="table table-striped table-bordered gone")#table_course
+			thead
+				tr
+					td
+						a Course
+					td
+						a Price
+					td
+						a Selling
+					td
+						a Buying
+			tbody
+			- for (var i = 0; i < course.length; i++) {
+				tr
+					td
+						a=course[i]['_id']
+					td
+						a=course[i]['value']['price']
+					td
+						a=course[i]['value']['sell']
+					td
+						a=course[i]['value']['buy']
+			- }

@@ -34,4 +34,16 @@ $(function() {
 			$('.cel').removeClass('bounce');
 		}, 600);
 	});
+	console.log(window);
+	//$('body').scrollTo('#table_cont', function(d){
+	window.onscroll = function(){
+		if(window.innerHeight + window.scrollY >= 1736){
+			$('#bg').addClass('tfixed');
+			$('#bg').removeClass('relative');
+		} else {
+			$('#bg').addClass('relative');
+			$('#bg').removeClass('tfixed');
+		}
+		console.log(window.innerHeight + window.scrollY);
+	};
 });
