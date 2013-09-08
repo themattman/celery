@@ -2,6 +2,7 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   /*background-color: #104E8B;*/
 
+  background-color: gray;
 }
 .titles {
   color: black;
@@ -17,15 +18,16 @@ a:hover {
   background-color: rgba(255, 255, 255, 0.4);
   background-repeat: no-repeat;
   height: 400px;
+  text-align: center;
 }
 #celery_cont {
   width: 300px;
   text-align: center;
   /*margin:0px auto;
-	padding: 100px 0px;*/
+	padding: 100px 0px;
+	-webkit-transform: translate3d(500px, 100px, 0);*/
 
   -webkit-user-select: none;
-  -webkit-transform: translate3d(500px, 100px, 0);
   position: absolute;
 }
 #celery {
@@ -63,10 +65,18 @@ td {
   word-wrap: break-word;
   max-width: 200px;
 }
+#bg {
+  background-image: url('/img/hackers.jpg');
+  background-repeat: no-repeat;
+  background-position: 0% -200px;
+}
 #table_cont {
   width: 500px;
   margin-right: auto;
   margin-left: auto;
+  /*background-position: 0% 0%;/*54% 38%;
+	background-color: rgba(255,255,255,0.4);*/
+
 }
 #courses {
   margin-top: 10px;

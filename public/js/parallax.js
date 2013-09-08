@@ -38,8 +38,8 @@ window.requestAnimFrame = (function(){
 
     var relativeY = lastScrollY / 3000;
 
-    prefix(mainBG.style, "Transform", "translate3d(0," +
-      pos(0, -200, relativeY, 0) + 'px, 0)');
+    /*prefix(mainBG.style, "Transform", "translate3d(0," +
+      pos(0, -200, relativeY, 0) + 'px, 0)');*/
 
     prefix(blob1.style, "Transform", "translate3d(500px," +
       pos(140, -1400, relativeY, 0) + 'px, 0)');
