@@ -2,11 +2,7 @@ extends layout
 
 block append content
 	#header_cont
-		#celery_cont
-			//#controls
-			//	.btn-group
-			//		.btn#insert.btn-success Insert
-			//		.btn#delete.btn-danger Delete
+		#celery_cont.force-show
 			#title_cont
 				a(class="in celery") Ce
 				img(src='/img/celery.png', class='cel').anim_none
@@ -68,7 +64,7 @@ block append content
 			thead
 				tr
 					td
-						a Course Name
+						a Course
 					td
 						a Price
 					td

@@ -16,13 +16,17 @@ a:hover {
 
   background-color: rgba(255, 255, 255, 0.4);
   background-repeat: no-repeat;
+  height: 400px;
 }
 #celery_cont {
   width: 300px;
   text-align: center;
-  margin: 0px auto;
-  padding: 100px 0px;
+  /*margin:0px auto;
+	padding: 100px 0px;*/
+
   -webkit-user-select: none;
+  -webkit-transform: translate3d(500px, 100px, 0);
+  position: absolute;
 }
 #celery {
   margin-left: -15px;
