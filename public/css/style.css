@@ -21,20 +21,19 @@ a:hover {
   width: 300px;
   text-align: center;
   margin: 0px auto;
-  padding: 70px 0px;
+  padding: 100px 0px;
   -webkit-user-select: none;
 }
-/*
-#title_cont {
-	-webkit-user-select: none;
-}*/
 #celery {
+  margin-left: -15px;
+}
+.celery {
   user-select: none;
   color: white;
   font-size: 50px;
   font-family: 'Open Sans', sans-serif;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: -10px;
+  margin-right: -10px;
 }
 .cel {
   width: 50px;
@@ -62,6 +61,8 @@ td {
 }
 #table_cont {
   width: 500px;
+  margin-right: auto;
+  margin-left: auto;
 }
 #courses {
   margin-top: 10px;
