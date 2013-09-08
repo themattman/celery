@@ -13,7 +13,7 @@ var cur_results  = 0
   , MongoClient  = require('mongodb').MongoClient
   , secret       = require('../server/secret').localdb
   , request      = require('request')
-  , access_token = 'CAACEdEose0cBAOiZApUZAvIqgjm5jEGDDDCJCU1EcuoZCK4GU438As4a1i1IsNlzO69Pjq7ZBLZCmKsNCfe0Gt5hINltOwYWF2oI9oPESTVEJZA1AjlZBMBnr7ZCegrbLouOTcPAvZAVzQjlIcNl8eWO1dKLz8iZCyC2tk0MHvwLG0kbtAp4dYtDKLFVqxZBBHqxbgNPJ24XOe43wZDZD'
+  , access_token = 'CAACEdEose0cBAM51FzMH2oF46UOd4VwofDvN2v4ZBOa6cFJoU8W9ZAQp6p3ACY8iVUXTKCtYhHMKz7svg3SsfFJpe3fbWMlXsywZCyoVpCsehF77MuppUz5niXD6PJQJt2rLZAbXoZBl2F24sKel1hRXHyB4b2xGDhQZChwAgJqERoLCVY2fHeHkESiMlrAztKC8U7hKMgeAZDZD'
   , fbid         = '343214415726175'
   , fblink       = 'https://graph.facebook.com/'+fbid+'/feed?limit='+num_results+'&access_token='+access_token
 ;
@@ -33,7 +33,7 @@ function fbdata(link){
       console.log('total number of posts', cur_results);
 
       MongoClient.connect('mongodb://'+secret.url+':'+secret.port+'/'+secret.name, function(err, db){if(err){throw err;}
-        db.collection('graphdata', function(err, col){if(err){throw err;}
+        db.collection('trawl', function(err, col){if(err){throw err;}
           col.insert(body.data, function(err, resp){if(err){console.log(err);}
           });
         });

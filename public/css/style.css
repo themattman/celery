@@ -30,6 +30,10 @@ a:hover {
   -webkit-user-select: none;
   position: absolute;
 }
+td,
+tr {
+  background: #BBB;
+}
 #celery {
   margin-left: -15px;
 }

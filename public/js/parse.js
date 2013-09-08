@@ -44,7 +44,7 @@ function tokenize (str) {
       var special = false;
 
       // Trim ending punctuation
-      str_arr[i] = str_arr[i].replace(/[,.?!:;-=+]+$/, '');
+      str_arr[i] = str_arr[i].replace(/[,.?!:;-=+'"()]+$/, '');
 
       // Check for links
       if(str_arr[i].match(/http(s)?:\/\/[^ ]+/) || str_arr[i].match(/www.[^ ]+.[^ ]+/)){str_arr[i]="";}//special = true;}
@@ -53,7 +53,7 @@ function tokenize (str) {
 
       // Course Name Classifier
       if(i+1 < str_arr.length){
-        str_arr[i+1] = str_arr[i+1].replace(/[,.?!:;-=+]+/g, '');
+        str_arr[i+1] = str_arr[i+1].replace(/[,.?!:;-=+'"()]+/g, '');
         if(str_arr[i].match(/^[a-z]+$/) && str_arr[i+1].match(/^[0-9]+$/)){
           course.push(str_arr[i] + str_arr[i+1]);
           course_bool = true;
