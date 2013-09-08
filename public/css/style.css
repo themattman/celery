@@ -49,6 +49,7 @@ a {
 }
 .bounce {
   -webkit-animation: bounce 0.3s;
+  -webkit-animation-timing-function: linear;
 }
 @-webkit-keyframes bounce {
   0% {

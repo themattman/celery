@@ -8,19 +8,20 @@ exports.getfbdata = function(link){
   // Iterate through the Graph API and throw docs into Mongo
   request(link, function(err, response, body){
     if(err){throw err;}
+    console.log(response.statusCode);
     if(response.statusCode == 200) {
 
+      console.log(body);
       body = JSON.parse(body);
 
       // Insert all the FB posts into MongoDB
       MongoClient.connect('mongodb://'+secret.url+':'+secret.port+'/'+secret.name, function(err, db){if(err){throw err;}
         db.collection('graphdata', function(err, col){if(err){throw err;}
           col.insert(body.data, function(err, resp){if(err){throw err;}
+            return body.data.length;
           });
         });
       });
-
-      return body.length;
 
     } else {
       // Error out if something was wrong with the FB request

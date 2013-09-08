@@ -1,6 +1,6 @@
 exports.map = function(){
   // Stop words src: http://www.textfixer.com/resources/common-english-words.txt
-  var stop_words = ['a','able','about','across','after','all','almost','also','am','among','an','and','any','are','as','at','be','because','been','but','by','can','cannot','could','dear','did','do','does','either','else','ever','every','for','from','get','got','had','has','have','he','her','hers','him','his','how','however','i','if','in','into','is','it','its','just','least','let','like','likely','may','me','might','most','must','my','neither','no','nor','not','of','off','often','on','only','or','other','our','own','rather','said','say','says','she','should','since','so','some','than','that','the','their','them','then','there','these','they','this','tis','to','too','twas','us','wants','was','we','were','what','when','where','which','while','who','whom','why','will','with','would','yet','you','your','plz','pls','please','message','someone'];
+  var stop_words = ['a','able','about','across','after','all','almost','also','am','among','an','and','any','are','as','at','be','because','been','but','by','can','cannot','could','dear','did','do','does','either','else','ever','every','for','from','get','got','had','has','have','he','her','hers','him','his','how','however','i','if','in','into','is','it','its','just','least','let','like','likely','may','me','might','most','must','my','neither','no','nor','not','of','off','often','on','only','or','other','our','own','rather','said','say','says','she','should','since','so','some','than','that','the','their','them','then','there','these','they','this','tis','to','too','twas','us','wants','was','we','were','what','when','where','which','while','who','whom','why','will','with','would','yet','you','your','plz','pls','please','message','someone','january','february','march','april','june','july','august','september','october','november','december','anybody','contact','interested'];
 
   var buying = ["buy", "buying"];//, "looking for"];
   var selling = ["sell", "selling"];
@@ -31,7 +31,8 @@ exports.map = function(){
         var special = false;
 
         // Trim ending punctuation
-        str_arr[i] = str_arr[i].replace(/[,.?!:;-=+]+/g, '');
+        str_arr[i] = str_arr[i].replace(/[,.?!:;-=+]+$/g, '');
+        str_arr[i] = str_arr[i].replace(/\n/g, '');
 
         // Check for links
         if(str_arr[i].match(/http(s)?:\/\/[^ ]+/) || str_arr[i].match(/www.[^ ]+.[^ ]+/)){special = true;}
@@ -41,20 +42,20 @@ exports.map = function(){
         // Course Name Classifier
         if(i+1 < str_arr.length){
           str_arr[i+1] = str_arr[i+1].replace(/[,.?!:;-=+]+/g, '');
-          if(str_arr[i].match(/^[a-z]+$/) && str_arr[i+1].match(/^[0-9]+$/)){
+          if(str_arr[i].match(/^[a-z]{2,7}$/) && str_arr[i+1].match(/^[0-9]{3,4}$/)){
             this.course.push(str_arr[i] + str_arr[i+1]);
             course_bool = true;
             continue;
           }
         }
-        if(str_arr[i].match(/^[a-z]+[0-9]+$/)){
+        if(str_arr[i].match(/^[a-z]{2,7}[0-9]{3,4}$/)){
           this.course.push(str_arr[i]);
           continue;
         }
 
         // Check for money
         if(str_arr[i].match(/^[$][0-9]+$/)){
-          this.price.push(str_arr[i]);
+          this.price.push(str_arr[i].substr(1,str_arr[i].length-1));
           continue;
         }
 
@@ -88,4 +89,19 @@ exports.map = function(){
   }
   emit(this._id, this);
 
+};
+
+exports.course_map = function(){
+  var obj = {};
+  obj.price = [];
+  obj.sell = [];
+  obj.buy = [];
+  if(this.value){
+    obj.price = this.value.price;
+    obj.sell = this.value.sell;
+    obj.buy = this.value.buy;
+    for(var i = 0; i < this.value.course.length; i++){
+      emit(this.value.course[i], obj);
+    }
+  }
 };
