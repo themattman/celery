@@ -4,7 +4,7 @@ var MongoClient  = require('mongodb').MongoClient
   , reduce       = require('./reduce.js')
   , fbdata       = require('./fbdata.js')
   , num_results  = 400
-  , access_token = 'CAACEdEose0cBADuWgg6lU2cj3DZB8UNckCKc11zDsInqAAJ1oxVNZCqiYHU6IEIF3629eaezBWlxZAwBOmZB4s74ruLY1cnxJlyZA0A93zIjZC1MmwJhThHcJzGfBLc7ZCBL9h7ZAEX50LBcBK6NL7fLtRuV5VmZBHwGRM9oP8sEhtwFXO74U9G88X8ZBSRUWygUQvngeHTk5N9AZDZD'
+  , access_token = 'CAACEdEose0cBAHXlvZBFwZAL9tbZBm44Vm5g1nxGsK1xxp9U5FjVE3OGAmJjGlbMP42MYuVd4vTSZCXz52jqfGOoiOzNiXLvYr68cFEXmdmZBCKAZAG3OBe9XmboU3ZCNLiLM8Oxcc93EnTuNdDO5ZAasX2A4KZA5ZAxM5t9v9p7v5RauPCVZB4ij7yyWYYSXD0pnroRazNzSUxbAZDZD'
   , fbid         = '343199955727621'
   , fblink       = 'https://graph.facebook.com/'+fbid+'/feed?limit='+num_results+'&access_token='+access_token
   , group_ids    = ['343199955727621', '343214415726175']
@@ -81,46 +81,13 @@ exports.mapReduce = function(req, res){
 
                       // COURSE
                       col2.mapReduce(map.course_map, reduce.course_reduce, {out: 'courses'}, function(err){if(err){throw err;}
-                        res.render('import', { unique: u, buy: b, sell: s});
+                        db.collection('courses', function(err, col){if(err){throw err;}
+                          col.find().toArray(function(err, c){
+                            console.log(c);
+                            res.render('import', { unique: u, buy: b, sell: s, course: c});
+                          });
+                        });
                       });
-                        //db.collection('courses', function(err, coll){if(err){throw err;}
-                          /*coll.insert(c, function(err){if(err){throw err;}});
-                          db.collection('prices', function(err, coll){if(err){throw err;}
-                            coll.insert(p, function(err){if(err){throw err;}});
-                          });*/
-
-                          /*coll.insert(u, function(err){if(err){throw err;}});
-                          coll.insert(b, function(err){if(err){throw err;}});
-                          coll.insert(s, function(err){if(err){throw err;}});*/
-                          //res.render('import', { unique: u, buy: b, sell: s});
-                        //});
-
-                      // COURSE
-                      /*col2.aggregate(
-                        { $project: { "$value.course": 1, "$value.price": 1, "$value.sell": 1, "$value.buy": 1, "_id": 0 } },
-                        { $unwind: "$value.course" },
-                        { $group: { '_id': "$value.course", 'value': { 'price': "$value.price", 'sell': "$value.sell", 'buy': "$value.buy" } } },
-                        { $sort: { "num": -1 } },
-                        function(err, c){
-                          if(err){console.log(err);}
-                          if(c){console.log(c);}
-
-                          // PRICE
-                          col2.aggregate(
-                            { $project: { "value.price": 1, "_id": 0 } },
-                            { $unwind: "$value.price" },
-                            { $group: { '_id': "$value.price", '': { $avg: "$value.price" } } },
-                            { $sort: { "num": -1 } },
-                            function(err, p){
-                              if(err){console.log(err);}
-                              if(p){console.log(p);}*/
-
-
-
-
-
-                          //});
-                      //});
                   });
 
               });

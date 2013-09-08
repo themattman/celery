@@ -44,6 +44,16 @@ thead tr td a {
 a {
   color: black;
 }
+td {
+  word-wrap: break-word;
+  max-width: 200px;
+}
+#table_cont {
+  width: 500px;
+}
+#courses {
+  margin-top: 10px;
+}
 .anim_none {
   -webkit-transform: rotate(0deg) translateX(0px) translateY(0px);
 }
