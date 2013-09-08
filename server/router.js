@@ -4,7 +4,7 @@ var MongoClient  = require('mongodb').MongoClient
   , reduce       = require('./reduce.js')
   , fbdata       = require('./fbdata.js')
   , num_results  = 400
-  , access_token = 'CAACEdEose0cBAHXlvZBFwZAL9tbZBm44Vm5g1nxGsK1xxp9U5FjVE3OGAmJjGlbMP42MYuVd4vTSZCXz52jqfGOoiOzNiXLvYr68cFEXmdmZBCKAZAG3OBe9XmboU3ZCNLiLM8Oxcc93EnTuNdDO5ZAasX2A4KZA5ZAxM5t9v9p7v5RauPCVZB4ij7yyWYYSXD0pnroRazNzSUxbAZDZD'
+  , access_token = 'CAACEdEose0cBAOiZApUZAvIqgjm5jEGDDDCJCU1EcuoZCK4GU438As4a1i1IsNlzO69Pjq7ZBLZCmKsNCfe0Gt5hINltOwYWF2oI9oPESTVEJZA1AjlZBMBnr7ZCegrbLouOTcPAvZAVzQjlIcNl8eWO1dKLz8iZCyC2tk0MHvwLG0kbtAp4dYtDKLFVqxZBBHqxbgNPJ24XOe43wZDZD'
   , fbid         = '343199955727621'
   , fblink       = 'https://graph.facebook.com/'+fbid+'/feed?limit='+num_results+'&access_token='+access_token
   , group_ids    = ['343199955727621', '343214415726175']

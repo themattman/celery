@@ -1,22 +1,23 @@
 extends layout
 
 block append content
-	#celery_cont
-		#controls
-			.btn-group
-				.btn#insert.btn-success Insert
-				.btn#delete.btn-danger Delete
-		#title_cont
-			a(id="celery", class="in") Ce
-			img(src='/img/celery.jpeg', class='cel').anim_none
-			a(id="celery", class="in") ery
-		#btn_cont
-			.btn-group
-				.btn#buy.active Buy
-				.btn#sell Sell
-				.btn#undef Undef
-		#btn_cont
-			.btn.btn-info#courses By Courses
+	#header_cont
+		#celery_cont
+			#controls
+				.btn-group
+					.btn#insert.btn-success Insert
+					.btn#delete.btn-danger Delete
+			#title_cont
+				a(id="celery", class="in") Ce
+				img(src='/img/celery.png', class='cel').anim_none
+				a(id="celery", class="in") ery
+			#btn_cont
+				.btn-group
+					.btn#buy.active Buy
+					.btn#sell Sell
+					.btn#undef Undef
+			#btn_cont
+				.btn.btn-info#courses By Courses
 	#table_cont
 		table(class="table table-striped table-bordered")#table_buy
 			thead
@@ -69,6 +70,8 @@ block append content
 					td
 						a Course Name
 					td
+						a Price
+					td
 						a Selling
 					td
 						a Buying
@@ -77,6 +80,8 @@ block append content
 				tr
 					td
 						a=course[i]['_id']
+					td
+						a=course[i]['value']['price']
 					td
 						a=course[i]['value']['sell']
 					td

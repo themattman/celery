@@ -8,7 +8,8 @@ exports.course_reduce = function(key, values){
   obj.sell = [];
   obj.buy = [];
   for(var i = 0; i < values.length; i++){
-    obj.price = obj.price.concat(values[i].price);
+    //obj.price = obj.price.concat(values[i].price);
+    obj.price += values[i].price;
     obj.sell = obj.sell.concat(values[i].sell);
     obj.buy = obj.buy.concat(values[i].buy);
   }
